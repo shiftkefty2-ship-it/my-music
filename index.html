@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Music</title>
+    <title>My Song</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
             min-height: 100vh;
@@ -28,188 +24,28 @@
             border-radius: 20px;
             background: #1c1c1c;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            margin-top: 0;
-        }
-
-        #songTitle {
-            margin: 20px 0;
-            font-size: 20px;
-            font-weight: bold;
+            margin-bottom: 25px;
         }
 
         audio {
             width: 100%;
-        }
-
-        button {
-            margin: 8px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-        .playlist {
-            margin-top: 20px;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .song {
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .song:hover {
-            background: #333;
-        }
-
-        .active {
-            background: #444;
         }
     </style>
 </head>
 
 <body>
 
-<div class="player">
+    <div class="player">
+        <h1>🎵 My Song</h1>
 
-    <h1>🎵 My Music</h1>
-
-    <div id="songTitle">Press Play</div>
-
-    <audio id="audio" controls></audio>
-
-    <div>
-        <button onclick="previousSong()">⏮ Previous</button>
-        <button onclick="togglePlay()">▶ Play / Pause</button>
-        <button onclick="nextSong()">Next ⏭</button>
+        <audio id="audio" controls loop>
+            <source src="song.mp3" type="audio/mpeg">
+            Your browser does not support audio.
+        </audio>
     </div>
-
-    <div class="playlist" id="playlist"></div>
-
-</div>
-
-<script>
-
-    // ==========================================
-    // PUT YOUR SONG FILE NAMES HERE
-    // ==========================================
-
-    const songs = [
-        "song1.mp3",
-        "song2.mp3",
-        "song3.mp3",
-        "song4.mp3"
-    ];
-
-    // ==========================================
-
-    const audio = document.getElementById("audio");
-    const songTitle = document.getElementById("songTitle");
-    const playlist = document.getElementById("playlist");
-
-    let currentSong = 0;
-
-    function loadSong(index, autoplay = false) {
-
-        currentSong = index;
-
-        audio.src = songs[currentSong];
-
-        let filename = songs[currentSong]
-            .split("/")
-            .pop()
-            .replace(/\.[^/.]+$/, "");
-
-        songTitle.textContent = filename;
-
-        updatePlaylist();
-
-        if (autoplay) {
-            audio.play().catch(() => {
-                console.log("Browser blocked autoplay. Press Play.");
-            });
-        }
-    }
-
-    function nextSong() {
-
-        currentSong++;
-
-        if (currentSong >= songs.length) {
-            currentSong = 0;
-        }
-
-        loadSong(currentSong, true);
-    }
-
-    function previousSong() {
-
-        currentSong--;
-
-        if (currentSong < 0) {
-            currentSong = songs.length - 1;
-        }
-
-        loadSong(currentSong, true);
-    }
-
-    function togglePlay() {
-
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
-    }
-
-    // Automatically play the next song
-    audio.addEventListener("ended", function() {
-        nextSong();
-    });
-
-    function updatePlaylist() {
-
-        playlist.innerHTML = "";
-
-        songs.forEach((song, index) => {
-
-            const div = document.createElement("div");
-
-            div.className = "song";
-
-            if (index === currentSong) {
-                div.classList.add("active");
-            }
-
-            div.textContent =
-                (index + 1) + ". " +
-                song.split("/").pop().replace(/\.[^/.]+$/, "");
-
-            div.onclick = function() {
-                loadSong(index, true);
-            };
-
-            playlist.appendChild(div);
-        });
-    }
-
-    // Load first song
-    loadSong(0);
-
-</script>
 
 </body>
 </html>
